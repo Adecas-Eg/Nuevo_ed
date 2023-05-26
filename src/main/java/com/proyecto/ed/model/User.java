@@ -23,9 +23,11 @@ public class User {
     private String telefono;
     private String ftPerfil;
     private String tipo_u;
-    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
+    private Boolean estado;
+
+    @OneToMany(mappedBy = "usuario")
     private List<Casa> casas;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Comment> comment;
 
 

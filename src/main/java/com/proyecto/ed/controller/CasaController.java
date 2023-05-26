@@ -2,6 +2,7 @@ package com.proyecto.ed.controller;
 
 
 import com.proyecto.ed.dto.Mensaje;
+import com.proyecto.ed.dto.casaDto;
 import com.proyecto.ed.model.Casa;
 import com.proyecto.ed.service.CasaService;
 import io.micrometer.common.util.StringUtils;
@@ -44,16 +45,31 @@ public class CasaController {
         return new ResponseEntity(casa, HttpStatus.OK);
     }
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody Casa casa){
+    public ResponseEntity<?> create(@RequestBody casaDto casa){
         //condicion para validadr lo haremos en angular
         if(StringUtils.isBlank(casa.getName())){
             return new ResponseEntity(new Mensaje("Nombre obligatorio"),HttpStatus.BAD_REQUEST);
         }
         //para saber que sea unico
-        if(casaService.existsById(casa.getId())){
-            return new ResponseEntity(new Mensaje("Ese nombre ya existe"),HttpStatus.BAD_REQUEST);
+        if(casaService.existsById(casa.getId())){return new ResponseEntity(new Mensaje("Ese nombre ya existe"),HttpStatus.BAD_REQUEST);
         }
-        casaService.save(casa);
+        Casa newCasa =new Casa();
+        newCasa.setName(casa.getName());
+        newCasa.setDescripcion(casa.getDescripcion());
+        newCasa.setTipoVenta(casa.getTipoVenta());
+        newCasa.setCiudad(casa.getCiudad());
+        newCasa.setPais(casa.getPais());
+        newCasa.setImg(casa.getImg());
+        newCasa.setVideo(casa.getVideo());
+        newCasa.setEstrato(casa.getEstrato());
+        newCasa.setPiso(casa.getPiso());
+        newCasa.setHabitaciones(casa.getHabitaciones());
+        newCasa.setParqueadero(casa.getParqueadero());
+        newCasa.setBalcon(casa.getBalcon());
+        newCasa.setBalcon(casa.getBalcon());
+        newCasa.setUsuario(casa.getUsuario());
+        newCasa.setComments(casa.getComments());
+        casaService.save(newCasa);
         return  new ResponseEntity(new Mensaje("Casa  creado"),HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
@@ -81,7 +97,7 @@ public class CasaController {
         newCasa.setBalcon(casa.getBalcon());
         newCasa.setAntiguedad(casa.getAntiguedad());
         casaService.save(newCasa);
-        return  new ResponseEntity(new Mensaje("Casa Modificado"),HttpStatus.OK);
+        return  new ResponseEntity(new Mensaje("Casa Modicada"),HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -92,9 +108,4 @@ public class CasaController {
         casaService.delete(id);
         return new ResponseEntity(new Mensaje("Casa Eliminado"),HttpStatus.OK);
     }
-
-
-
-
-
 }

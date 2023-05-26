@@ -2,6 +2,7 @@ package com.proyecto.ed.controller;
 
 
 import com.proyecto.ed.dto.Mensaje;
+import com.proyecto.ed.dto.UserLogin;
 import com.proyecto.ed.model.Casa;
 import com.proyecto.ed.model.User;
 import com.proyecto.ed.repository.UserRepository;
@@ -10,6 +11,7 @@ import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +33,31 @@ public class UserController {
         User user = userService.getOne(id).get();
         return new ResponseEntity(user, HttpStatus.OK );
     }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Validated  @RequestBody UserLogin log){
+        if(!userService.existsByEmail(log.getEmail())){
+            return new ResponseEntity<>(new Mensaje("Este email no existe"),HttpStatus.BAD_REQUEST);
+        }
+        if(!userService.existsByPassword(log.getPassword())){
+            return new ResponseEntity<>(new Mensaje("Contraseña incorrecta"),HttpStatus.BAD_REQUEST);
+        }
+        if(log.getEmail()== null){
+            return new ResponseEntity<>(new Mensaje("Email requerido"),HttpStatus.BAD_REQUEST);
+        }
+        if(log.getPassword()== null){
+            return new ResponseEntity<>(new Mensaje("Contraseña requerido"),HttpStatus.BAD_REQUEST);
+        }
+        if(log.getPassword().isBlank()){
+            return new ResponseEntity<>(new Mensaje("Email requerido"),HttpStatus.BAD_REQUEST);
+        }
+        if(log.getEmail().isBlank()){
+            return new ResponseEntity<>(new Mensaje("Email requerido"),HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userService.getByEmail(log.getEmail()).get();
+        return new ResponseEntity(new Mensaje("Bienvenido a Eden life "+ user.getNombre()),
+                HttpStatus.OK);
+    }
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody User user){
         if(StringUtils.isBlank(user.getEmail())){
@@ -47,26 +74,61 @@ public class UserController {
         newUser.setPais(user.getPais());
         newUser.setCiudad(user.getCiudad());
         newUser.setTipo_u(user.getTipo_u());
-
+        newUser.setFtPerfil(user.getFtPerfil());
+        newUser.setEstado(user.getEstado());
         userService.save(newUser);
         return new ResponseEntity(new Mensaje("Gracias Por Registrarte en EDEN LIFE!!!"), HttpStatus.OK);
     }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable ("id")int id){
+    @PutMapping("update/{id}")
+    public ResponseEntity<?> update(@RequestBody User  user,@PathVariable("id")int id){
         if(!userService.existsById(id)){
             return new ResponseEntity(new Mensaje("No se encontro la casa que busca"),HttpStatus.NOT_FOUND);
         }
-        userService.delete(id);
-        return new ResponseEntity(new Mensaje("Useruai Eliminado"),HttpStatus.OK);
+        if(userService.existsByEmail(user.getEmail())){
+            return new ResponseEntity(new Mensaje("El email ya esta registrado ingrese otro"),HttpStatus.NOT_FOUND);
+        }
+
+        if(userService.existsById(id)){
+            return new ResponseEntity(new Mensaje("No se encontro la casa que busca"),HttpStatus.NOT_FOUND);
+        }
+        User newUser = userService.getOne(id).get();
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword(user.getPassword());
+        newUser.setFecha(user.getFecha());
+        newUser.setEdad(user.getEdad());
+        newUser.setPais(user.getPais());
+        newUser.setCiudad(user.getCiudad());
+        newUser.setTipo_u(user.getTipo_u());
+        newUser.setFtPerfil(user.getFtPerfil());
+        newUser.setEstado(user.getEstado());
+        userService.save(newUser);
+        return new ResponseEntity<>(new Mensaje("Usuario modificado"),HttpStatus.OK);
     }
+
+
+
+//    @DeleteMapping("/delete/{id}")
+//    public ResponseEntity<?> deleteUser(@PathVariable ("id")int id){
+//        if(!userService.existsById(id)){
+//            return new ResponseEntity(new Mensaje("No se encontro la casa que busca"),HttpStatus.NOT_FOUND);
+//        }
+//        userService.delete(id);
+//        return new ResponseEntity(new Mensaje("Useruai Eliminado"),HttpStatus.OK);
+//    }
 
     @GetMapping("/detail/{id}/casas")
     public ResponseEntity<List<Casa>> listCasasUser(@PathVariable("id")int id){
         User user = userService.getOne(id).get();
         return new ResponseEntity(user.getCasas(), HttpStatus.OK );
     }
-
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") int id){
+        if(!userService.existsById(id)){
+            return new ResponseEntity(new Mensaje("No se encontro la materia que busca"),HttpStatus.NOT_FOUND);
+        }
+        userService.delete(id);
+        return new ResponseEntity(new Mensaje("Materia Eliminado"),HttpStatus.OK);
+    }
 
 
 

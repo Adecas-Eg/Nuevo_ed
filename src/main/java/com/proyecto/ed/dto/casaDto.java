@@ -1,21 +1,12 @@
-package com.proyecto.ed.model;
+package com.proyecto.ed.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import com.proyecto.ed.model.Comment;
+import com.proyecto.ed.model.User;
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
 
 import java.util.List;
-
 @Data
-@Entity
-@Table(name = "casas")
-
-
-public class Casa {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "casa_id")
+public class casaDto {
     private int id;
     private String name;
     private String descripcion;
@@ -31,18 +22,14 @@ public class Casa {
     private String parqueadero;
     private String balcon;
     private String antiguedad;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="id_user")
-    @JsonBackReference
     private User usuario ;
-    @OneToMany(mappedBy = "casa")
     private List<Comment> comments;
 
 
-    public Casa() {
+    public casaDto() {
     }
 
-    public Casa(int id, String name, String descripcion, String tipoVenta, String ciudad, String pais, String img, String video, String estrato, String piso, String habitaciones, String area, String parqueadero, String balcon, String antiguedad, User usuario, List<Comment> comments) {
+    public casaDto(int id, String name, String descripcion, String tipoVenta, String ciudad, String pais, String img, String video, String estrato, String piso, String habitaciones, String area, String parqueadero, String balcon, String antiguedad) {
         this.id = id;
         this.name = name;
         this.descripcion = descripcion;
@@ -58,7 +45,5 @@ public class Casa {
         this.parqueadero = parqueadero;
         this.balcon = balcon;
         this.antiguedad = antiguedad;
-        this.usuario = usuario;
-//        this.comments = comments;
     }
 }
