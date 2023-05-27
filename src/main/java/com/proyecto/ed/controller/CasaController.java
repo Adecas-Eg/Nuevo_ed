@@ -4,6 +4,7 @@ package com.proyecto.ed.controller;
 import com.proyecto.ed.dto.Mensaje;
 import com.proyecto.ed.dto.casaDto;
 import com.proyecto.ed.model.Casa;
+import com.proyecto.ed.model.User;
 import com.proyecto.ed.service.CasaService;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -28,22 +30,12 @@ public class CasaController {
 
 
     @GetMapping("/detail/{id}")
-    public ResponseEntity<Casa> getById(int id){
-        if(!casaService.existsById(id)){
-            return new ResponseEntity(new Mensaje("No se encontro la casa que busca"),HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<User> getDetailId(@PathVariable("id") int id){
         Casa casa = casaService.getOne(id).get();
-        return new ResponseEntity(casa, HttpStatus.OK);
+        return new ResponseEntity(casa, HttpStatus.OK );
     }
     
-    @GetMapping("/detail/{name}")
-    public ResponseEntity<Casa> getDetail(String name){
-        if(!casaService.existsByName(name)){
-            return new ResponseEntity(new Mensaje("No se encontro la casa que busca"),HttpStatus.NOT_FOUND);
-        }
-        Casa casa = casaService.getByNombre(name).get();
-        return new ResponseEntity(casa, HttpStatus.OK);
-    }
+
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody casaDto casa){
         //condicion para validadr lo haremos en angular
@@ -66,9 +58,9 @@ public class CasaController {
         newCasa.setHabitaciones(casa.getHabitaciones());
         newCasa.setParqueadero(casa.getParqueadero());
         newCasa.setBalcon(casa.getBalcon());
-        newCasa.setBalcon(casa.getBalcon());
-        newCasa.setUsuario(casa.getUsuario());
-        newCasa.setComments(casa.getComments());
+        newCasa.setDirrecion(casa.getDirrecion());
+//      newCasa.setUser(casa.getUsuario());
+//      newCasa.setComments(casa.getComments());
         casaService.save(newCasa);
         return  new ResponseEntity(new Mensaje("Casa  creado"),HttpStatus.OK);
     }
@@ -96,6 +88,8 @@ public class CasaController {
         newCasa.setParqueadero(casa.getParqueadero());
         newCasa.setBalcon(casa.getBalcon());
         newCasa.setAntiguedad(casa.getAntiguedad());
+        newCasa.setDirrecion(casa.getDirrecion());
+
         casaService.save(newCasa);
         return  new ResponseEntity(new Mensaje("Casa Modicada"),HttpStatus.OK);
     }

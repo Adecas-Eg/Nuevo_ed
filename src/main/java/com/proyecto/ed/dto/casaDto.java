@@ -22,7 +22,9 @@ public class casaDto {
     private String parqueadero;
     private String balcon;
     private String antiguedad;
+    private String dirrecion;
     private User usuario ;
+
     private List<Comment> comments;
 
 
@@ -47,3 +49,4 @@ public class casaDto {
         this.antiguedad = antiguedad;
     }
 }
+

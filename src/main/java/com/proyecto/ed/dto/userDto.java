@@ -21,9 +21,6 @@ public class userDto {
     private String telefono;
     private String ftPerfil;
     private String tipo_u;
-    private List<Casa> casas;
-
-    private List<Comment> comment;
 
     public userDto() {
     }

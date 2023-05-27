@@ -1,9 +1,10 @@
 package com.proyecto.ed.model;
 
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
+
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class Casa {
     private int id;
     private String name;
     private String descripcion;
+    private String dirrecion;
     private String tipoVenta;
     private String ciudad;
     private String pais;
@@ -31,10 +33,11 @@ public class Casa {
     private String parqueadero;
     private String balcon;
     private String antiguedad;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="id_user")
+    @ManyToOne
+    @JoinColumn(name = "id_user",nullable =false)
     @JsonBackReference
-    private User usuario ;
+    private User user;
+
     @OneToMany(mappedBy = "casa")
     private List<Comment> comments;
 
@@ -42,7 +45,7 @@ public class Casa {
     public Casa() {
     }
 
-    public Casa(int id, String name, String descripcion, String tipoVenta, String ciudad, String pais, String img, String video, String estrato, String piso, String habitaciones, String area, String parqueadero, String balcon, String antiguedad, User usuario, List<Comment> comments) {
+    public Casa(int id, String name, String descripcion, String tipoVenta, String ciudad, String pais, String img, String video, String estrato, String piso, String habitaciones, String area, String parqueadero, String balcon, String antiguedad,String dirrecion) {
         this.id = id;
         this.name = name;
         this.descripcion = descripcion;
@@ -58,7 +61,7 @@ public class Casa {
         this.parqueadero = parqueadero;
         this.balcon = balcon;
         this.antiguedad = antiguedad;
-        this.usuario = usuario;
+        this.dirrecion = dirrecion;
 //        this.comments = comments;
     }
 }

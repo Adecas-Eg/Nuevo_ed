@@ -13,12 +13,12 @@ public class Comment {
     private int id;
     private String descripcion;
     @ManyToOne()
-    @JoinColumn(name =  "id_casa")
+    @JoinColumn(name =  "id_casa",nullable =false)
     @JsonBackReference
     private  Casa casa;
 
     @ManyToOne()
-    @JoinColumn(name =  "id_user")
+    @JoinColumn(name =  "id_user",nullable =false)
     private User user;
 
     public Comment() {

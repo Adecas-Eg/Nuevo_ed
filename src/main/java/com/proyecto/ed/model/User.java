@@ -2,7 +2,11 @@ package com.proyecto.ed.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.engine.internal.Cascade;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,9 +29,9 @@ public class User {
     private String tipo_u;
     private Boolean estado;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Casa> casas;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Comment> comment;
 
 
