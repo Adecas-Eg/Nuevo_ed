@@ -12,14 +12,14 @@ public class Comment {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     private String descripcion;
-    @ManyToOne()
-    @JoinColumn(name =  "id_casa",nullable =false)
-    @JsonBackReference
-    private  Casa casa;
-
-    @ManyToOne()
-    @JoinColumn(name =  "id_user",nullable =false)
-    private User user;
+//    @ManyToOne()
+//    @JoinColumn(name =  "id_casa",nullable =false)
+//    @JsonBackReference
+//    private  Casa casa;
+//
+//    @ManyToOne()
+//    @JoinColumn(name =  "id_user",nullable =false)
+//    private User user;
 
     public Comment() {
     }

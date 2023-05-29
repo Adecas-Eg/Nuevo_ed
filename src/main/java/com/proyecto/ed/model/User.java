@@ -29,10 +29,10 @@ public class User {
     private String tipo_u;
     private Boolean estado;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Casa> casas;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<Comment> comment;
+   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+     private List<Casa> casas;
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+//    private List<Comment> comment;
 
 
     public User() {

@@ -39,6 +39,12 @@ public class UserController {
         User user = userService.getOne(id).get();
         return new ResponseEntity(user, HttpStatus.OK );
     }
+    @GetMapping("/detaile/{email}")
+    public ResponseEntity<User> getByEmail(@PathVariable("email") String email){
+        User user = userService.getByEmail(email).get();
+        return new ResponseEntity<>(user,HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated  @RequestBody UserLogin log ){
         if(!userService.existsByEmail(log.getEmail())){
@@ -111,10 +117,6 @@ public class UserController {
         if(userService.existsByEmail(user.getEmail())){
             return new ResponseEntity(new Mensaje("El email ya esta registrado ingrese otro"),HttpStatus.NOT_FOUND);
         }
-
-        if(userService.existsById(id)){
-            return new ResponseEntity(new Mensaje("No se encontro la casa que busca"),HttpStatus.NOT_FOUND);
-        }
         User newUser = userService.getOne(id).get();
         newUser.setEmail(user.getEmail());
         newUser.setPassword(user.getPassword());
@@ -140,14 +142,14 @@ public class UserController {
         return new ResponseEntity(new Mensaje("Useruai Eliminado"),HttpStatus.OK);
     }
 
-//    @GetMapping("/detail/{id}/casas")
-//    public ResponseEntity<List<Casa>> listCasasUser(@PathVariable("id")int id){
-//        if (!userService.existsById(id)){
-//            return  new ResponseEntity(new Mensaje("No se encotro la persona"),HttpStatus.BAD_REQUEST);
-//        }
-//        User user = userService.getOne(id).get();
-////        return new ResponseEntity(user.getCasas(), HttpStatus.OK );
-//    }
+    @GetMapping("/detail/{email}/casas")
+    public ResponseEntity<List<Casa>> listCasasUser(@PathVariable("email")String email){
+        if (!userService.existsByEmail(email)){
+            return  new ResponseEntity(new Mensaje("No se encotro la persona"),HttpStatus.BAD_REQUEST);
+        }
+        User user = userService.getByEmail(email).get();
+        return new ResponseEntity(user.getCasas(), HttpStatus.OK );
+    }
 
 
 }

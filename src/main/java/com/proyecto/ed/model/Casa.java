@@ -33,13 +33,14 @@ public class Casa {
     private String parqueadero;
     private String balcon;
     private String antiguedad;
+
     @ManyToOne
-    @JoinColumn(name = "id_user",nullable =false)
+    @JoinColumn(name = "id_user")
     @JsonBackReference
     private User user;
-
-    @OneToMany(mappedBy = "casa")
-    private List<Comment> comments;
+//
+//    @OneToMany(mappedBy = "casa")
+//    private List<Comment> comments;
 
 
     public Casa() {
